@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import useAxiosCities from "../customHooks/useAxiosCities";
 import ListCities from "./ListCities";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCitiesWithSameState,
+  setSelectedCity,
+} from "../store/dataSlice/dataSlice";
 
 export default function SelectMenu() {
   const [options] = useAxiosCities();
 
-  const [selectedCity, setSelectedCity] = useState(null);
-  const [citiesWithSameState, setCitiesWithSameState] = useState([]);
+  // const [selectedCity, setSelectedCity] = useState(null);
+  // const [citiesWithSameState, setCitiesWithSameState] = useState([]);
+  const { selectedCity, citiesWithSameState } = useSelector(
+    (store) => store.data
+  );
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const selectedState = e.target.value;
@@ -21,8 +30,10 @@ export default function SelectMenu() {
     );
     // console.log(selectedCity);
     // console.log("filtered", filteredCities);
-    setSelectedCity(selectedCity);
-    setCitiesWithSameState(filteredCities);
+    // setSelectedCity(selectedCity);
+    // setCitiesWithSameState(filteredCities);
+    dispatch(setSelectedCity(selectedCity));
+    dispatch(setCitiesWithSameState(filteredCities));
   };
 
   const handleCopy = () => {
